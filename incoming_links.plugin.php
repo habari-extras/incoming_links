@@ -30,6 +30,8 @@ class IncomingLinks extends Plugin
 	{
 		if ( realpath( $file ) == __FILE__ ) {
 			Modules::add( 'Incoming Links' );
+			// Add a periodical execution event to be triggered hourly
+			CronTab::add_hourly_cron( 'incoming_links', 'incoming_links', 'Find links to this blog.' );
 		}
 	}
 
@@ -38,7 +40,22 @@ class IncomingLinks extends Plugin
 		if( Plugins::id_from_file($file) == Plugins::id_from_file(__FILE__) ) {
 			// remove the module from the dash if it is active
 			Modules::remove_by_name( 'Incoming Links' );
+			// Remove the periodical execution event
+			CronTab::delete_cronjob( 'incoming_links' );
 		}
+	}
+
+	/**
+	 * Plugin incoming_links filter, executes for the cron job defined in action_plugin_activation()
+	 * @param boolean $result The incoming result passed by other sinks for this plugin hook
+	 * @return boolean True if the cron executed successfully, false if not.
+	 */
+	public function filter_incoming_links( $result )
+	{
+		$incoming_links= $this->get_incoming_links();
+		Cache::set( 'incoming_links', $incoming_links );
+
+		return $result;  // Only change a cron result to false when it fails.
 	}
 
 	public function filter_dash_modules( $modules )
@@ -58,12 +75,13 @@ class IncomingLinks extends Plugin
 
 	public function theme_incoming_links()
 	{
+		// There really should be something in the cache, CronJob should have put it there, but if there's not, go get the links now
 		if ( Cache::has( 'incoming_links' ) ) {
 			$incoming_links= Cache::get( 'incoming_links' );
 		}
 		else {
 			$incoming_links= $this->get_incoming_links();
-			//Cache::set( 'incoming_links', $incoming_links );
+			Cache::set( 'incoming_links', $incoming_links );
 		}
 
 		return $incoming_links;
@@ -86,7 +104,7 @@ class IncomingLinks extends Plugin
 				$links[]= array( 'href' => $entry->link['href'], 'title' => $entry->title );
 			}
 		} catch(Exception $e) {
-			//print '<p>' . $e->getMessage() . "</p>\r\n";
+			$links['error']= $e->getMessage();
 		}
 		return $links;
 	}
