@@ -101,7 +101,7 @@ class IncomingLinks extends Plugin
 			$xml = new SimpleXMLElement( $response );
 			foreach( $xml->entry as $entry ) { 
 				//<!-- need favicon discovery and caching here: img class="favicon" src="http://skippy.net/blog/favicon.ico" alt="favicon" / -->
-				$links[]= array( 'href' => $entry->link['href'], 'title' => $entry->title );
+				$links[]= array( 'href' => (string)$entry->link['href'], 'title' => (string)$entry->title );
 			}
 		} catch(Exception $e) {
 			$links['error']= $e->getMessage();
