@@ -40,11 +40,13 @@ class IncomingLinks extends Plugin
 
 	function action_plugin_deactivation( $file )
 	{
-		if( Plugins::id_from_file($file) == Plugins::id_from_file(__FILE__) ) {
+		if ( Plugins::id_from_file($file) == Plugins::id_from_file(__FILE__) ) {
 			// remove the module from the dash if it is active
 			Modules::remove_by_name( 'Incoming Links' );
 			// Remove the periodical execution event
 			CronTab::delete_cronjob( 'incoming_links' );
+			// Clear the cached links
+			Cache::expire( 'incoming_links' );
 		}
 	}
 
@@ -115,7 +117,8 @@ class IncomingLinks extends Plugin
 	/**
 	* Enable update notices to be sent using the Habari beacon
 	*/
-	public function action_update_check() {
+	public function action_update_check()
+	{
 		Update::add( 'IncomingLinks', 'f33b2428-facb-43b7-bb44-a8d78cb3ff9d',  $this->info->version );
 	}
 
