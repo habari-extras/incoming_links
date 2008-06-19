@@ -6,6 +6,9 @@ class IncomingLinks extends Plugin
 	 *
 	 */
 
+	// Setting the expiry to 2 hours means it will never expire, because the cron job runs every hour.
+	private $cache_expiry= 7200;
+
 	/**
 	 * Required Plugin Informations
 	 */
@@ -53,7 +56,7 @@ class IncomingLinks extends Plugin
 	public function filter_incoming_links( $result )
 	{
 		$incoming_links= $this->get_incoming_links();
-		Cache::set( 'incoming_links', $incoming_links );
+		Cache::set( 'incoming_links', $incoming_links, $this->cache_expiry );
 
 		return $result;  // Only change a cron result to false when it fails.
 	}
@@ -81,7 +84,7 @@ class IncomingLinks extends Plugin
 		}
 		else {
 			$incoming_links= $this->get_incoming_links();
-			Cache::set( 'incoming_links', $incoming_links );
+			Cache::set( 'incoming_links', $incoming_links, $this->cache_expiry );
 		}
 
 		return $incoming_links;
