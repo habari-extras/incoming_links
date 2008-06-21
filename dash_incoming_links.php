@@ -1,4 +1,4 @@
-<h2><?php _e( 'Incoming Links' ); ?> (<a href="http://blogsearch.google.com/?scoring=d&amp;num=10&amp;q=link:<?php Site::out_url( 'hostname' ) ?>" title="<?php _e( 'More incoming links' ); ?>"><?php _e( 'more' ); ?></a> &raquo;)</h2><div class="handle">&nbsp;</div>
+<h2><?php _e( 'Incoming Links' ); ?> (<a href="http://blogsearch.google.com/?scoring=d&amp;num=10&amp;q=link:<?php Site::out_url( 'habari' ) ?>" title="<?php _e( 'More incoming links' ); ?>"><?php _e( 'more' ); ?></a> &raquo;)</h2><div class="handle">&nbsp;</div>
 <ul class="items">
 <?php if ( array_key_exists( 'error', $incoming_links ) ): ?>
 	<li class="item clear">
