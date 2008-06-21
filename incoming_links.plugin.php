@@ -96,7 +96,7 @@ class IncomingLinks extends Plugin
 	{
 		$links = array();
 		try {
-			$search= new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=link:' . Site::get_url( 'hostname' ) );
+			$search= new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=link:' . Site::get_url( 'habari' ) );
 			$search->set_timeout( 5 );
 			$result= $search->execute();
 			if ( Error::is_error( $result ) ) {
