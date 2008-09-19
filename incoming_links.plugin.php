@@ -7,7 +7,7 @@ class IncomingLinks extends Plugin
 	 */
 
 	// Setting the expiry to 2 hours means it will never expire, because the cron job runs every hour.
-	private $cache_expiry= 7200;
+	private $cache_expiry = 7200;
 
 	/**
 	 * Required Plugin Informations
@@ -57,7 +57,7 @@ class IncomingLinks extends Plugin
 	 */
 	public function filter_incoming_links( $result )
 	{
-		$incoming_links= $this->get_incoming_links();
+		$incoming_links = $this->get_incoming_links();
 		Cache::set( 'incoming_links', $incoming_links, $this->cache_expiry );
 
 		return $result;  // Only change a cron result to false when it fails.
@@ -72,7 +72,7 @@ class IncomingLinks extends Plugin
 
 	public function filter_dash_module_incoming_links( $module, $module_id, $theme )
 	{
-		$theme->incoming_links= $this->theme_incoming_links();
+		$theme->incoming_links = $this->theme_incoming_links();
 
 		$module['content']= $theme->fetch( 'dash_incoming_links' );
 		return $module;
@@ -82,10 +82,10 @@ class IncomingLinks extends Plugin
 	{
 		// There really should be something in the cache, CronJob should have put it there, but if there's not, go get the links now
 		if ( Cache::has( 'incoming_links' ) ) {
-			$incoming_links= Cache::get( 'incoming_links' );
+			$incoming_links = Cache::get( 'incoming_links' );
 		}
 		else {
-			$incoming_links= $this->get_incoming_links();
+			$incoming_links = $this->get_incoming_links();
 			Cache::set( 'incoming_links', $incoming_links, $this->cache_expiry );
 		}
 
@@ -96,9 +96,9 @@ class IncomingLinks extends Plugin
 	{
 		$links = array();
 		try {
-			$search= new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=link:' . Site::get_url( 'habari' ) );
+			$search = new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=link:' . Site::get_url( 'habari' ) );
 			$search->set_timeout( 5 );
-			$result= $search->execute();
+			$result = $search->execute();
 			if ( Error::is_error( $result ) ) {
 				throw $result;
 			}
