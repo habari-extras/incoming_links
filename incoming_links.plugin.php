@@ -10,23 +10,6 @@ class IncomingLinks extends Plugin
 	private $cache_expiry = 7200;
 
 	/**
-	 * Required Plugin Informations
-	 */
-	public function info()
-	{
-		return array(
-			'name' => 'IncomingLinks',
-			'version' => '1.0',
-			'url' => 'http://habariproject.org/',
-			'author' =>	'Habari Community',
-			'authorurl' => 'http://habariproject.org/',
-			'license' => 'Apache License 2.0',
-			'description' => 'Incoming Links Dashboard Module',
-			'copyright' => '2008'
-		);
-	}
-
-	/**
 	 *
 	 */
 	public function action_plugin_activation( $file )
