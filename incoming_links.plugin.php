@@ -79,7 +79,7 @@ class IncomingLinks extends Plugin
 	{
 		$links = array();
 		try {
-			$search = new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=link:' . Site::get_url( 'habari' ) );
+			$search = new RemoteRequest( 'http://blogsearch.google.com/blogsearch_feeds?scoring=d&num=10&output=atom&q=blogurl:' . Site::get_url( 'habari' ) );
 			$search->set_timeout( 5 );
 			$result = $search->execute();
 			if ( Error::is_error( $result ) ) {
@@ -87,7 +87,7 @@ class IncomingLinks extends Plugin
 			}
 			$response = $search->get_response_body();
 			$xml = new SimpleXMLElement( $response );
-			foreach( $xml->entry as $entry ) { 
+			foreach( $xml->entry as $entry ) {
 				//<!-- need favicon discovery and caching here: img class="favicon" src="http://skippy.net/blog/favicon.ico" alt="favicon" / -->
 				$links[]= array( 'href' => (string)$entry->link['href'], 'title' => (string)$entry->title );
 			}
