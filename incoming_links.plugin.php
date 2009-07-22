@@ -10,23 +10,6 @@ class IncomingLinks extends Plugin
 	private $cache_expiry = 7200;
 
 	/**
-	 * Required Plugin Informations
-	 */
-	public function info()
-	{
-		return array(
-			'name' => 'IncomingLinks',
-			'version' => '1.0',
-			'url' => 'http://habariproject.org/',
-			'author' =>	'Habari Community',
-			'authorurl' => 'http://habariproject.org/',
-			'license' => 'Apache License 2.0',
-			'description' => 'Incoming Links Dashboard Module',
-			'copyright' => '2008'
-		);
-	}
-
-	/**
 	 *
 	 */
 	public function action_plugin_activation( $file )
@@ -104,7 +87,7 @@ class IncomingLinks extends Plugin
 			}
 			$response = $search->get_response_body();
 			$xml = new SimpleXMLElement( $response );
-			foreach( $xml->entry as $entry ) { 
+			foreach( $xml->entry as $entry ) {
 				//<!-- need favicon discovery and caching here: img class="favicon" src="http://skippy.net/blog/favicon.ico" alt="favicon" / -->
 				$links[]= array( 'href' => (string)$entry->link['href'], 'title' => (string)$entry->title );
 			}
