@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <pluggable type="plugin">
 	<name>IncomingLinks</name>
-	<author url="http://habariproject.org/">Habari Community</author>
+	<author url="http://habariproject.org/">The Habari Community</author>
 	<author url="http://twofishcreative.com/">Michael C. Harris</author>
 	<url>http://habariproject.org/</url>
 	<version>1.0</version>
