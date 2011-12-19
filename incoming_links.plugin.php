@@ -86,11 +86,17 @@ class IncomingLinks extends Plugin
 				throw $result;
 			}
 			$response = $search->get_response_body();
-			$xml = new SimpleXMLElement( $response );
-			foreach( $xml->entry as $entry ) {
-				//<!-- need favicon discovery and caching here: img class="favicon" src="http://skippy.net/blog/favicon.ico" alt="favicon" / -->
-				$links[]= array( 'href' => (string)$entry->link['href'], 'title' => (string)$entry->title );
+			if (mb_detect_encoding($response, 'UTF-8', true)) {
+				$xml = new SimpleXMLElement( $response );
+				foreach ( $xml->entry as $entry ) {
+					//<!-- need favicon discovery and caching here: img class="favicon" src="http://skippy.net/blog/favicon.ico" alt="favicon" / -->
+					$links[]= array( 'href' => (string)$entry->link['href'], 'title' => (string)$entry->title );
+				}
 			}
+			else {
+				EventLog::log(_t('The response had non-UTF-8 characters'), 'err', 'plugin');
+			}
+
 		} catch(Exception $e) {
 			$links['error']= $e->getMessage();
 		}
