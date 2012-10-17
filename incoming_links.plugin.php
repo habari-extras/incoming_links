@@ -39,19 +39,28 @@ class IncomingLinks extends Plugin
 		return $result;  // Only change a cron result to false when it fails.
 	}
 
-	public function filter_block_list( $block_list )
+	/**
+	 * Add the block this plugin provides to the list of available blocks
+	 * @param array $block_list An array of block names, indexed by unique string identifiers
+	 * @return array The altered array
+	 */
+	public function filter_dashboard_block_list($block_list)
 	{
-		$block_list[]= 'Incoming Links';
-		$this->add_template( 'dash_incoming_links', dirname( __FILE__ ) . '/dash_incoming_links.php' );
+		$block_list['incoming_links'] = 'Incoming Links';
+		$this->add_template( 'dashboard.block.incoming_links', __DIR__ . '/dashboard.block.incoming_links.php' );
 		return $block_list;
 	}
 
-	public function filter_dash_module_incoming_links( $module, $module_id, $theme )
-	{
-		$theme->incoming_links = $this->theme_incoming_links();
+	/**
+	 * Produce the content for the latest entries block
+	 * @param Block $block The block object
+	 * @param Theme $theme The theme that the block will be output with
+	 */
 
-		$module['content']= $theme->fetch( 'dash_incoming_links' );
-		return $module;
+	public function action_block_content_incoming_links($block, $theme)
+	{
+		$block->incoming_links = $this->theme_incoming_links();
+		$block->link = "http://blogsearch.google.com/?scoring=d&amp;num=10&amp;q=link:" . Site::get_url( 'habari' );;
 	}
 
 	public function theme_incoming_links()
