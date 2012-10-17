@@ -14,23 +14,16 @@ class IncomingLinks extends Plugin
 	 */
 	public function action_plugin_activation( $file )
 	{
-		if ( realpath( $file ) == __FILE__ ) {
-			Modules::add( 'Incoming Links' );
-			// Add a periodical execution event to be triggered hourly
-			CronTab::add_hourly_cron( 'incoming_links', 'incoming_links', 'Find links to this blog.' );
-		}
+		// Add a periodical execution event to be triggered hourly
+		CronTab::add_hourly_cron( 'incoming_links', 'incoming_links', 'Find links to this blog.' );
 	}
 
 	function action_plugin_deactivation( $file )
 	{
-		if ( Plugins::id_from_file($file) == Plugins::id_from_file(__FILE__) ) {
-			// remove the module from the dash if it is active
-			Modules::remove_by_name( 'Incoming Links' );
-			// Remove the periodical execution event
-			CronTab::delete_cronjob( 'incoming_links' );
-			// Clear the cached links
-			Cache::expire( 'incoming_links' );
-		}
+		// Remove the periodical execution event
+		CronTab::delete_cronjob( 'incoming_links' );
+		// Clear the cached links
+		Cache::expire( 'incoming_links' );
 	}
 
 	/**
@@ -46,11 +39,11 @@ class IncomingLinks extends Plugin
 		return $result;  // Only change a cron result to false when it fails.
 	}
 
-	public function filter_dash_modules( $modules )
+	public function filter_block_list( $block_list )
 	{
-		$modules[]= 'Incoming Links';
+		$block_list[]= 'Incoming Links';
 		$this->add_template( 'dash_incoming_links', dirname( __FILE__ ) . '/dash_incoming_links.php' );
-		return $modules;
+		return $block_list;
 	}
 
 	public function filter_dash_module_incoming_links( $module, $module_id, $theme )
@@ -94,7 +87,7 @@ class IncomingLinks extends Plugin
 				}
 			}
 			else {
-				EventLog::log(_t('The response had non-UTF-8 characters'), 'err', 'plugin');
+				EventLog::log( _t( 'The response had non-UTF-8 characters' ), 'err', 'plugin' );
 			}
 
 		} catch(Exception $e) {
