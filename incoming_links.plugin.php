@@ -103,13 +103,5 @@ class IncomingLinks extends Plugin
 		return $links;
 	}
 
-	/**
-	* Enable update notices to be sent using the Habari beacon
-	*/
-	public function action_update_check()
-	{
-		Update::add( 'IncomingLinks', 'f33b2428-facb-43b7-bb44-a8d78cb3ff9d',  $this->info->version );
-	}
-
 }
 ?>
